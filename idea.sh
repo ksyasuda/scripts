@@ -1,0 +1,1 @@
+../Downloads/idea-IC-202.6948.69/bin/idea.sh

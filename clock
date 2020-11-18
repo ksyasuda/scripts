@@ -1,0 +1,25 @@
+#!/bin/bash
+
+color=$1
+
+# pink
+#tty-clock -SsctbC5
+# red
+#tty-clock -SsctbC1
+# cyan
+#tty-clock -SsctbC6
+argc=$#
+
+if [[ $1 == "-h" ]]; then
+	echo "red, cyan, or pink (default)"
+fi
+
+if [[ $argc -gt 0 ]]; then
+	if [[ $color == "red" ]]; then
+		tty-clock -SsctbC1
+	elif [[ $color == "cyan" ]]; then
+		tty-clock -SsctbC6
+	fi
+else
+	tty-clock -SsctbC5
+fi

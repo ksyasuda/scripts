@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+# the cows directory
+cows=/usr/share/cows
+# choose a random cow from the directory
+theme=$(ls $cows | shuf -n 1)
+
+if [[ $# -gt 0 && $1 == "-v" ]]; then
+	echo "Theme:" $theme
+fi
+fortune | cowsay -f $theme | lolcat
