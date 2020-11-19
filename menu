@@ -42,15 +42,15 @@ rofi -no-lazy-grab -show drun \
 -hide-scrollbar true \
 -bw 0 \
 -lines 12 \
--line-padding 8 \
--padding 20 \
--width 80 \
+-line-padding 38 \
+-padding 120 \
+-width 180 \
 -xoffset 27 -yoffset 60 \
 -location 1 \
--columns 2 \
+-columns 3 \
 -markup \
--show-icons -icon-theme "Qogir-dark" \
--font "FiraCode Nerd Font 34" \
+-show-icons -icon-theme "Breeze" \
+-font "FiraCode Nerd Font 24" \
 -color-enabled true \
 -color-window "$BACKGROUND,$BORDER,$SEPARATOR" \
 -color-normal "$BACKGROUND_ALT,$FOREGROUND,$BACKGROUND_ALT,$HIGHLIGHT_BACKGROUND,$HIGHLIGHT_FOREGROUND" \
