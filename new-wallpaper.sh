@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
-set -Eeuo pipefail
+# set -Eeuo pipefail
 
-DIR=~/Pictures/wallpapers/
+DIR=/home/sudacode/Pictures/wallpapers/
 
 img=$(ls $DIR | shuf -n 1)
 
