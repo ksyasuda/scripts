@@ -307,7 +307,7 @@ show_menu() {
 rofi_command="rofi -theme "/home/sudacode/i3/rofi/slate.rasi" -markup -lines 10 -location 1 -xoffset 528 -yoffset 110 -dmenu -p"
 
 # set the font
-font_name="Droid Sans 28"
+font_name="Droid Sans 14"
 
 case "$1" in
     --status)
