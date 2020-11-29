@@ -304,7 +304,7 @@ show_menu() {
 # Position just below polybar
 # rofi_command="rofi -lines 10 -location 1 -xoffset 450 -yoffset 65 -dmenu -p"
 # position at top of window
-rofi_command="rofi -markup -lines 10 -location 1 -xoffset 528 -yoffset 110 -dmenu -p"
+rofi_command="rofi -theme '/home/sudacode/i3/rofi/slate.rasi' -markup -lines 10 -location 1 -xoffset 528 -yoffset 110 -dmenu -p"
 
 # set the font
 font_name="Droid Sans 28"
