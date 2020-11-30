@@ -2,7 +2,10 @@
 
 # script to launch a new instance of picom in the background
 
-set -Eeuo pipefail
+set -Euo pipefail
+# set -Eeuo pipefail
+# remove the e argument so that it does not stop on any command failure
+# e.g. having no picom running and having line 15 return non 0 return code
 
 verbose=0
 if [[ $# -gt 0 && $1 == "-v" ]]; then
