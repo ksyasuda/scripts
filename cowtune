@@ -10,4 +10,4 @@ theme=$(ls $cows | shuf -n 1)
 if [[ $# -gt 0 && $1 == "-v" ]]; then
 	echo "Theme:" $theme
 fi
-fortune | cowsay -f $theme | lolcat 2>/dev/null
+fortune | cowsay -f $theme 2>/dev/null | lolcat 2>/dev/null
