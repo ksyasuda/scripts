@@ -8,8 +8,39 @@ set -Euo pipefail
 # e.g. having no picom running and having line 15 return non 0 return code
 
 verbose=0
-if [[ $# -gt 0 && $1 == "-v" ]]; then
-	verbose=1
+justKillIt=0
+# if [[ $# -gt 0 && $1 == "-v" ]]; then
+# 	verbose=1
+# fi
+
+while getopts "vk" arg; do
+	case $arg in
+		v) verbose=1;;
+		k) justKillIt=1;;
+	esac
+done
+
+if [[ $justKillIt -eq 1 ]]; then
+	if [[ $verbose -eq 1 ]]; then
+		echo 'Searching for running picom instance'
+	fi
+	if [[ $(pgrep -x "picom") != '' ]]; then
+		PID=$(pidof "picom")
+		if [[ $verbose -eq 1 ]]; then
+			echo 'Found running instance of picom with pid '$PID
+			echo 'Killing instance'
+		fi
+		kill -9 $PID
+		if [[ $verbose -eq 1 ]]; then
+			echo 'Killed picom instance with pid' $PID
+		fi
+		exit 0
+	else
+		if [[ $verbose -eq 1 ]]; then
+			echo 'No running instance of picom found'
+		fi
+		exit 1
+	fi
 fi
 
 res=$(pgrep -x picom)
