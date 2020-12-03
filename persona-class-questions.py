@@ -40,6 +40,7 @@ def main():
         # first line will be date 4/12
         day = {}
         date = lines[0]
+        first = True
         for i in range(len(lines)):
             # first date already set skip
             # don't need empty lines either
@@ -48,16 +49,17 @@ def main():
             parts = lines[i].split(' ')
             if len(parts) == 1:
                 # date string
-                date = parts[0]
-                days[parts[0].rstrip()] = day
+                # days[parts[0].rstrip()] = day
+                days[date.rstrip()] = day
                 day = {}
-                date = ''
+                date = parts[0] 
                 if isVerbose:
                     print('DATE: ', parts[0], 'Q/A', day)
             elif len(parts) == 2 and parts[0] == 'EXAMS':
                 # exams date string
-                days[parts[1].rstrip()] = day
-                date = ''
+                # days[parts[1].rstrip()] = day
+                days[date.rstrip()] = day
+                date = parts[1]
                 day = {}
                 if isVerbose:
                     print('DATE: ', parts[1], 'Q/A', day)
