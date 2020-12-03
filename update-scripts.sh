@@ -4,6 +4,12 @@ set -Euo pipefail
 
 DIR=~/scripts/
 
+if [[ $(git status | grep 'nothing to commit, working tree clean') != '' ]]
+then
+	echo 'Nothing to commit, repo updated'
+	exit 0
+fi
+
 (
 	cd $DIR
 	git add .
