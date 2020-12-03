@@ -55,7 +55,7 @@ if [[ $res  != '' ]]; then
 	done
 fi
 
-picom &
+picom --experimental-backends &
 if [[ $verbose -eq 1 ]] 
 then
 	pid=$(pidof picom)
