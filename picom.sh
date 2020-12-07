@@ -55,7 +55,12 @@ if [[ $res  != '' ]]; then
 	done
 fi
 
-picom --experimental-backends &
+if [[ $verbose -eq 1 ]]; then
+	picom &
+else
+	picom &>/dev/null &
+fi
+
 if [[ $verbose -eq 1 ]] 
 then
 	pid=$(pidof picom)
