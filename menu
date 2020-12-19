@@ -45,9 +45,9 @@ rofi -no-lazy-grab -show drun \
 -line-padding 8 \
 -padding 20 \
 -width 80 \
--xoffset 27 -yoffset 60 \
+-xoffset 40 -yoffset 100 \
 -location 1 \
--columns 2 \
+-columns 3 \
 -markup \
 -show-icons -icon-theme "Qogir-dark" \
 -font "FiraCode Nerd Font 24" \
