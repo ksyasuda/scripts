@@ -9,3 +9,4 @@ fi
 filename=$1
 filename="${filename%.*}"
 echo $filename
+exit 0
