@@ -51,9 +51,16 @@ def cleanup(directory):
             # print('new', new_name)
 
         pattern2 = re.compile(r'-NA')
-        res2 = pattern2.search(song)
+        res2 = None
+        if new_name is not None:
+            res2 = pattern2.search(new_name)
+        else:
+            res2 = pattern2.search(song)
         if res2 is not None:
-            new_name = get_filtered_name(song, res2)
+            if new_name is not None:
+                new_name = get_filtered_name(new_name, res2)
+            else:
+                new_name = get_filtered_name(song, res2)
             # print('old', song)
             # print('new', new_name)
 
@@ -84,7 +91,10 @@ def edit_files(directory, text, clean):
             music_dir = Path.home()/"Music"
             new_path = music_dir/new_text
             # print(new_path)
+            # rename and move to the ~/Music folder
             i.rename(new_path)
+            ## update the database
+            os.system('mpc update &>/dev/null')
     
 
 
