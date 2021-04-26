@@ -119,9 +119,13 @@ device_connected() {
 toggle_connection() {
     if device_connected $1; then
         bluetoothctl disconnect $1
+        # show dunst notification for disconnect
+        python ~/i3/scripts/bluetooth_notifications.py "disconnected" "$device"
         show_menu
     else
         bluetoothctl connect $1
+        # show dunst notification for connection
+        python ~/i3/scripts/bluetooth_notifications.py "connected" "$device"
         show_menu
     fi
 }
