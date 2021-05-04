@@ -302,7 +302,7 @@ show_menu() {
 
 # Rofi command to pipe into, can add any options here
 # rofi_command="rofi -dmenu -p"
-rofi_command="rofi -theme /home/sudacode/i3/rofi/slate.rasi -markup -lines 10 -location 1 -xoffset 528 -yoffset 110 -dpi 1 -dmenu -p"
+rofi_command="rofi -theme /home/sudacode/i3/rofi/slate.rasi -markup -lines 10 -location 1 -xoffset 528 -yoffset 110 -dpi 1 -dmenu -i -p"
 
 case "$1" in
     --status)
