@@ -5,4 +5,9 @@ if [[ $# -gt 0 && $1 == "-v" ]]; then
 	bluetoothctl power on && bluetoothctl connect 24:1B:7A:ED:ED:78
 	exit 0
 fi
-bluetoothctl power on >/dev/null && bluetoothctl connect 24:1B:7A:ED:ED:78 >/dev/null
+
+if [ "$(bluetoothctl power on >/dev/null && bluetoothctl connect 24:1B:7A:ED:ED:78 >/dev/null)" -eq 0 ]; then
+	~/i3/scripts/bluetooth_notifications.py "connected" "Kyle\'s Airpods"	
+else
+	echo 'not nice'
+fi
