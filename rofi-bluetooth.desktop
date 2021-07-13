@@ -16,6 +16,10 @@
 # Depends on:
 #   Arch repositories: rofi, bluez-utils (contains bluetoothctl)
 
+# Constants
+divider="---------"
+goback="Back"
+
 # Checks if bluetooth controller is powered on
 power_on() {
     if bluetoothctl show | grep -q "Powered: yes"; then
@@ -31,6 +35,9 @@ toggle_power() {
         bluetoothctl power off
         show_menu
     else
+        if rfkill list bluetooth | grep -q 'blocked: yes'; then
+            rfkill unblock bluetooth && sleep 3
+        fi
         bluetoothctl power on
         show_menu
     fi
@@ -119,10 +126,12 @@ device_connected() {
 toggle_connection() {
     if device_connected $1; then
         bluetoothctl disconnect $1
-        show_menu
+	python ~/i3/scripts/bluetooth_notifications.py "disconnected" "$device"
+        device_menu "$device"
     else
         bluetoothctl connect $1
-        show_menu
+	python ~/i3/scripts/bluetooth_notifications.py "connected" "$device"
+        device_menu "$device"
     fi
 }
 
@@ -142,10 +151,10 @@ device_paired() {
 toggle_paired() {
     if device_paired $1; then
         bluetoothctl remove $1
-        show_menu
+        device_menu "$device"
     else
         bluetoothctl pair $1
-        show_menu
+        device_menu "$device"
     fi
 }
 
@@ -165,10 +174,10 @@ device_trusted() {
 toggle_trust() {
     if device_trusted $1; then
         bluetoothctl untrust $1
-        show_menu
+        device_menu "$device"
     else
         bluetoothctl trust $1
-        show_menu
+        device_menu "$device"
     fi
 }
 
@@ -176,8 +185,7 @@ toggle_trust() {
 # Useful for status bars like polybar, etc.
 print_status() {
     if power_on; then
-        # printf ''
-        echo -n '%{F#A8D385} %{F- }'
+        printf ''
 
         mapfile -t paired_devices < <(bluetoothctl paired-devices | grep Device | cut -d ' ' -f 2)
         counter=0
@@ -187,24 +195,17 @@ print_status() {
                 device_alias=$(bluetoothctl info $device | grep "Alias" | cut -d ' ' -f 2-)
 
                 if [ $counter -gt 0 ]; then
-                    # printf ", %s" "$device_alias"
-                    echo "%{F#A8D385},$device_alias%{F-}"
-           	    # echo %{F#A8D385} On %{F- }
+                    printf ", %s" "$device_alias"
                 else
-                    echo "%{F#A8D385}$device_alias%{F-}"
-                    # printf " %s" "$device_alias"
+                    printf " %s" "$device_alias"
                 fi
 
                 ((counter++))
             fi
         done
-
-       if [ $counter -eq 0 ]; then
-           # printf " On"
-           echo %{F#A8D385}On %{F- }
-       fi
+        printf "\n"
     else
-        echo "%{F#fc8353} Off%{F- }"
+        echo "%{F#fc8353}%{F- }"
     fi
 }
 
@@ -224,14 +225,14 @@ device_menu() {
     fi
     paired=$(device_paired $mac)
     trusted=$(device_trusted $mac)
-    options="$connected\n$paired\n$trusted"
+    options="$connected\n$paired\n$trusted\n$divider\n$goback\nExit"
 
     # Open rofi menu, read chosen option
-    chosen="$(echo -e "$options" | $rofi_command "$device_name" "-font" "$font_name")"
+    chosen="$(echo -e "$options" | $rofi_command "$device_name")"
 
     # Match chosen option to command
     case $chosen in
-        "")
+        "" | $divider)
             echo "No option chosen."
             ;;
         $connected)
@@ -242,6 +243,9 @@ device_menu() {
             ;;
         $trusted)
             toggle_trust $mac
+            ;;
+        $goback)
+            show_menu
             ;;
     esac
 }
@@ -260,7 +264,6 @@ show_menu() {
         scan=$(scan_on)
         pairable=$(pairable_on)
         discoverable=$(discoverable_on)
-        divider="---------"
 
         # Options passed to rofi
         options="$devices\n$divider\n$power\n$scan\n$pairable\n$discoverable\nExit"
@@ -270,7 +273,7 @@ show_menu() {
     fi
 
     # Open rofi menu, read chosen option
-    chosen="$(echo -e "$options" | $rofi_command "Bluetooth" "-font" "$font_name")"
+    chosen="$(echo -e "$options" | $rofi_command "Bluetooth")"
 
     # Match chosen option to command
     case $chosen in
@@ -298,16 +301,8 @@ show_menu() {
 }
 
 # Rofi command to pipe into, can add any options here
-# original command
 # rofi_command="rofi -dmenu -p"
-
-# Position just below polybar
-# rofi_command="rofi -lines 10 -location 1 -xoffset 450 -yoffset 65 -dmenu -p"
-# position at top of window
-rofi_command="rofi -theme "/home/sudacode/i3/rofi/slate.rasi" -markup -lines 10 -location 1 -xoffset 240 -yoffset 60 -dmenu -p"
-
-# set the font
-font_name="Droid Sans 14"
+rofi_command="rofi -theme /home/$USER/i3/rofi/slate.rasi -markup -lines 10 -location 1 -xoffset 240 -yoffset 60 -dpi 1 -dmenu -p"
 
 case "$1" in
     --status)
