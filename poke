@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+# Path to PokeMMO
+DIR=~/Downloads/PokeMMO/
+EXE=PokeMMO.sh
+
+# Get the current datetime
+DATE=$(date +%Y-%m-%d_%H-%M-%S)
+
+(
+	cd "$DIR" 
+	bash "$EXE" &> ~/Downloads/PokeMMO/logs/"$DATE"_PokeMMO.log &
+)
